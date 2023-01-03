@@ -1,11 +1,15 @@
 import express, {Express, Request, Response, Errback, NextFunction} from 'express';
-import * as dotenv from 'dotenv';
+import 'dotenv/config';
 import * as autoload from './autoload';
-
-dotenv.config();
+import { createClient } from '@supabase/supabase-js';
 
 const app: Express = express();
 const port = process.env.PORT;
+
+// Init supabase
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_KEY;
+globalThis.supabase = createClient(supabaseUrl, supabaseKey)
 
 // load api modules
 autoload.init('/api', app);

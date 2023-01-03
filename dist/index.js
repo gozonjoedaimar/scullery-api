@@ -27,19 +27,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const dotenv = __importStar(require("dotenv"));
+require("dotenv/config");
 const autoload = __importStar(require("./autoload"));
-dotenv.config();
+const supabase_js_1 = require("@supabase/supabase-js");
 const app = (0, express_1.default)();
 const port = process.env.PORT;
+// Init supabase
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_KEY;
+globalThis.supabase = (0, supabase_js_1.createClient)(supabaseUrl, supabaseKey);
 // load api modules
 autoload.init('/api', app);
 // Handle 404
 app.use(function (req, res) {
     res.json({ "404": "not found" });
-});
-// Handle system error
-app.use(function (err, req, res, next) {
 });
 app.listen(port, function () {
     console.log(`Server listening to port ${port}`);

@@ -4,8 +4,7 @@ const express_1 = require("express");
 const router = (0, express_1.Router)();
 // Route GET /api/inventory/kitchen
 router.get('/', function (req, res) {
-    throw new Error('Error here~~~~');
-    res.json({ api: "Kitchen" });
+    res.json({ api: "Kitchen", debug: typeof supabase });
 });
 const Kitchen = router;
 exports.default = Kitchen;
