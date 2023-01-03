@@ -17,12 +17,12 @@ interface LoadRoute {
   ):void;
 }
 
-function getFiles(path: string) {
+function getFiles(path: string): RouteFile[] {
   // list api files
   let pathFiles = glob.sync(`./src${path}/**/*.ts`);
   
   // extract api path
-  let files: RouteFile[] = pathFiles.map(f => {
+  let files = pathFiles.map(f => {
     let file = f.split('/src/').join('/').split('.ts')[0];
     let pathObj = Path.parse(file);
     let module = file.split(`${path}/`)[1];
@@ -53,7 +53,7 @@ let loadRoutes: LoadRoute = function(route, app, files) {
   );
 }
 
-export let init: LoadRoute = function(route, app):void {
-  let files = getFiles(route);
+export let init: LoadRoute = function(route, app, files):void {
+  if (!files) files = getFiles(route);
   loadRoutes(route, app, files);
 }

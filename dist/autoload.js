@@ -31,8 +31,9 @@ let loadRoutes = function (route, app, files) {
         app.use([route, f.module].join('/'), require(f.file).default);
     });
 };
-let init = function (route, app) {
-    let files = getFiles(route);
+let init = function (route, app, files) {
+    if (!files)
+        files = getFiles(route);
     loadRoutes(route, app, files);
 };
 exports.init = init;

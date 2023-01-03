@@ -32,9 +32,14 @@ const autoload = __importStar(require("./autoload"));
 dotenv.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT;
+// load api modules
 autoload.init('/api', app);
+// Handle 404
 app.use(function (req, res) {
     res.json({ "404": "not found" });
+});
+// Handle system error
+app.use(function (err, req, res, next) {
 });
 app.listen(port, function () {
     console.log(`Server listening to port ${port}`);
