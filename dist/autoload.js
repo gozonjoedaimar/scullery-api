@@ -11,7 +11,7 @@ function getFiles(path) {
     let pathFiles = glob_1.default.sync(`./src${path}/**/*.ts`);
     // extract api path
     let files = pathFiles.map(f => {
-        let file = f.split('/src/').join('/').split('.ts')[0];
+        let file = f.split('/src/').join('/').split('.ts')[0]; // trim path name
         let pathObj = path_1.default.parse(file);
         let module = file.split(`${path}/`)[1];
         if (pathObj.name === 'index') {

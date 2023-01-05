@@ -1,21 +1,5 @@
-import { Express } from 'express';
 import glob from 'glob';
 import Path from 'path';
-
-
-interface RouteFile {
-  file: string;
-  name: string;
-  module: string;
-}
-
-interface LoadRoute {
-  (
-    route: string,
-    app: Express,
-    files?: RouteFile[]
-  ):void;
-}
 
 function getFiles(path: string): RouteFile[] {
   // list api files
@@ -23,7 +7,7 @@ function getFiles(path: string): RouteFile[] {
   
   // extract api path
   let files = pathFiles.map(f => {
-    let file = f.split('/src/').join('/').split('.ts')[0];
+    let file = f.split('/src/').join('/').split('.ts')[0]; // trim path name
     let pathObj = Path.parse(file);
     let module = file.split(`${path}/`)[1];
     
