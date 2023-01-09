@@ -38,6 +38,8 @@ const supabaseKey = process.env.SUPABASE_KEY;
 globalThis.supabase = (0, supabase_js_1.createClient)(supabaseUrl, supabaseKey);
 // load api modules
 autoload.init('/api', app);
+// load auth modules
+autoload.init('/auth', app);
 // Handle 404
 app.use(function (req, res) {
     res.json({ "404": "not found" });

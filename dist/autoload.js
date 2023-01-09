@@ -28,7 +28,8 @@ function getFiles(path) {
 }
 let loadRoutes = function (route, app, files) {
     files === null || files === void 0 ? void 0 : files.map(f => {
-        app.use([route, f.module].join('/'), require(f.file).default);
+        let endpoint = f.module === 'index' ? route : [route, f.module].join('/');
+        app.use(endpoint, require(f.file).default);
     });
 };
 let init = function (route, app, files) {

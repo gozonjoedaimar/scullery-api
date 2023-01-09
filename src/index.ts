@@ -14,6 +14,9 @@ globalThis.supabase = createClient(supabaseUrl, supabaseKey)
 // load api modules
 autoload.init('/api', app);
 
+// load auth modules
+autoload.init('/auth', app);
+
 // Handle 404
 app.use(function(req: Request, res: Response) {
   res.json({"404":"not found"});

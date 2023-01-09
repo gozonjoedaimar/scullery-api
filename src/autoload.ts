@@ -29,8 +29,9 @@ function getFiles(path: string): RouteFile[] {
 let loadRoutes: LoadRoute = function(route, app, files) {
   files?.map(
     f => {
+      let endpoint = f.module === 'index' ? route: [route,f.module].join('/');
       app.use(
-        [route,f.module].join('/'),
+        endpoint,
         require(f.file).default
       );
     }
