@@ -1,44 +1,40 @@
-import glob from 'glob';
-import Path from 'path';
+import { Express } from 'express';
+import { GlobSync } from 'glob';
+import { basename, dirname } from 'path';
 
-function getFiles(path: string): RouteFile[] {
-  // list api files
-  let pathFiles = glob.sync(`./src${path}/**/*.ts`);
-  
-  // extract api path
-  let files = pathFiles.map(f => {
-    let file = f.split('/src/').join('/').split('.ts')[0]; // trim path name
-    let pathObj = Path.parse(file);
-    let module = file.split(`${path}/`)[1];
-    
-    if (pathObj.name === 'index') {
-      module = module.split('/index')[0];
+// get route name from file name
+function routeName(name: string) {
+    // return subdir name
+    if (name.endsWith('/')) {
+        return basename(dirname(name + 'index'));
     }
-
-    return {
-      file,
-      name: pathObj.name,
-      module
-    };
-  });
-
-  // fix routing heirarchy by calling .reverse
-  return files.reverse();
+    // else return file name without extension
+    let split = name.split('.');
+    if (split.length > 1) {
+        split.pop();
+    }
+    return basename(split.join('.'));
 }
 
-let loadRoutes: LoadRoute = function(route, app, files) {
-  files?.map(
-    f => {
-      let endpoint = f.module === 'index' ? route: [route,f.module].join('/');
-      app.use(
-        endpoint,
-        require(f.file).default
-      );
-    }
-  );
-}
+export async function init(route: string, app: Express) {
+    const dirRelPath = '.' + route;
+    const matchSubdir  = dirRelPath + '/*/';
+    const subDirMatch = new GlobSync(matchSubdir, { cwd: __dirname }).found;
+    const indexMatch = new GlobSync( dirRelPath + '/*.{ts,js,tsx,jsx}', {cwd: __dirname} ).found;
 
-export let init: LoadRoute = function(route, app, files):void {
-  if (!files) files = getFiles(route);
-  loadRoutes(route, app, files);
+    indexMatch.forEach((file) => {
+        const name = routeName(file);
+        const module = require(file);
+        if (name === 'index') {
+            app.use(route, module.default);
+        }
+        else {
+            app.use(route + '/' + name, module.default);
+        }
+    });
+
+    subDirMatch.forEach((dir) => {
+        const name = routeName(dir);
+        init(route + '/' + name, app);
+    });
 }
