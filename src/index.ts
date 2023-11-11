@@ -6,6 +6,8 @@ import { createClient } from '@supabase/supabase-js';
 const app: Express = express();
 const port = process.env.PORT;
 
+app.use(express.json());
+
 // Init supabase
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
@@ -15,7 +17,7 @@ globalThis.supabase = createClient(supabaseUrl, supabaseKey)
 init('/api', app);
 
 // load auth modules
-// autoload.init('/auth', app);
+init('/auth', app);
 
 // Handle 404
 app.use(function(req, res) {
