@@ -1,6 +1,6 @@
 import express, {Express} from 'express';
 import 'dotenv/config';
-import { init } from './autoload';
+import { init } from './routes/autoload';
 import { createClient } from '@supabase/supabase-js';
 
 const app: Express = express();
