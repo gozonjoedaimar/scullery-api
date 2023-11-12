@@ -11,7 +11,13 @@ app.use(express.json());
 // Init supabase
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
-globalThis.supabase = createClient(supabaseUrl, supabaseKey)
+globalThis.supabase = createClient(supabaseUrl, supabaseKey, {
+  auth: {
+    autoRefreshToken: false,
+    persistSession: false,
+    detectSessionInUrl: false
+  }
+})
 
 // load api modules
 init('/api', app);
