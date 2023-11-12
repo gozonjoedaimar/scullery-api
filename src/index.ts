@@ -2,6 +2,7 @@ import express, {Express} from 'express';
 import 'dotenv/config';
 import { init } from './routes/autoload';
 import { createClient } from '@supabase/supabase-js';
+import { app_auth } from './middlewares/auth';
 
 const app: Express = express();
 const port = process.env.PORT;
@@ -18,6 +19,9 @@ globalThis.supabase = createClient(supabaseUrl, supabaseKey, {
     detectSessionInUrl: false
   }
 })
+
+// auth middleware
+app.use(app_auth());
 
 // load api modules
 init('/api', app);
