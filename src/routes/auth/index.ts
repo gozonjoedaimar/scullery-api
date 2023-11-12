@@ -1,16 +1,13 @@
 import { Router, Request, Response } from "express";
+import { login, logout } from '../../controllers/auth';
 
 const router = Router();
 
 // Route POST /auth/login
-router.post('/login', function(req: Request, res: Response) {
-  res.json({api: "Login"});
-})
+router.post('/login', login)
 
 // Route POST /auth/logout
-router.post('/logout', function(req: Request, res: Response) {
-  res.json({api: "Logout"});
-})
+router.post('/logout', logout)
 
 const Auth = router;
 
