@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { ob_null } from '../../helpers/object';
+import { ob_null } from '@/helpers/object';
 
 /**
  * Login

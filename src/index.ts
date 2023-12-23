@@ -1,5 +1,7 @@
-import express, {Express} from 'express';
 import 'dotenv/config';
+import 'module-alias/register';
+
+import express, {Express} from 'express';
 import { init } from './routes/autoload';
 import { createClient } from '@supabase/supabase-js';
 import { app_auth } from './middlewares/auth';
