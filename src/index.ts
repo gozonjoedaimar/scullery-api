@@ -2,10 +2,10 @@ import 'dotenv/config';
 import 'module-alias/register';
 
 import express, {Express} from 'express';
-import { init } from './routes/autoload';
 import { createClient } from '@supabase/supabase-js';
 import { app_auth } from './middlewares/auth';
-import apiRoute from '@/routes/api'
+import apiRoute from '@/routes/api';
+import authRoute from '@/routes/auth';
 
 const app: Express = express();
 const port = process.env.PORT;
@@ -30,13 +30,13 @@ app.use(app_auth());
 app.use('/api', apiRoute);
 
 // load auth modules
-init('/auth', app);
+app.use('/auth', authRoute);
 
 // Handle 404
-app.use(function(req, res) {
+app.use((req, res) => {
   res.json({"404":"not found"});
 })
 
-app.listen(port, function() {
+app.listen(port, () => {
   console.log(`Server listening to port ${port}`);
 });
