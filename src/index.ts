@@ -5,6 +5,7 @@ import express, {Express} from 'express';
 import { init } from './routes/autoload';
 import { createClient } from '@supabase/supabase-js';
 import { app_auth } from './middlewares/auth';
+import apiRoute from '@/routes/api'
 
 const app: Express = express();
 const port = process.env.PORT;
@@ -26,7 +27,7 @@ globalThis.supabase = createClient(supabaseUrl, supabaseKey, {
 app.use(app_auth());
 
 // load api modules
-init('/api', app);
+app.use('/api', apiRoute);
 
 // load auth modules
 init('/auth', app);
