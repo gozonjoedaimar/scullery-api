@@ -8,7 +8,3 @@ export const index : Controller = () => (req, res) => {
         message: "Stockroom API"
     });
 }
-
-export default {
-    index
-}

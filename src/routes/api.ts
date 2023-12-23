@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import registerRoute from '@/helpers/routes';
-import kitchenController from '@/controllers/api/inventory/kitchen';
-import stockroomController from '@/controllers/api/inventory/stockroom';
+import * as kitchenController from '@/controllers/api/inventory/kitchen';
+import * as stockroomController from '@/controllers/api/inventory/stockroom';
 
 /**
  * Api routes

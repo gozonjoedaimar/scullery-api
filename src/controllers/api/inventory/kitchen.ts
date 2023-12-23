@@ -31,10 +31,3 @@ export const version: Controller = () => (req, res) => {
         version:"v1"
     });
 }
-
-export default {
-    index,
-    version,
-    menu,
-    item
-}
