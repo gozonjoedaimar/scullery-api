@@ -1,10 +1,13 @@
 import { type Request, type Response, type NextFunction } from 'express';
 
-export const app_auth = () =>
-    async (req: Request, res: Response, next: NextFunction) => {
+type FunctionMiddleware = () => (req: Request, res: Response, next: NextFunction) => Promise<Response|undefined>;
+
+export const app_auth: FunctionMiddleware = () =>
+    async (req, res, next) => {
         // skip auth routes
         if (req.path.includes("/auth/")) {
-            return next();
+            next();
+            return;
         }
         // get session user
         const {
@@ -28,8 +31,8 @@ export const app_auth = () =>
         next();
     };
 
-export const useAuth = () =>
-    async (req: Request, res: Response, next: NextFunction ) => {
+export const useAuth: FunctionMiddleware = () =>
+    async (req, res, next ) => {
         // get session user
         const {
             data: {
