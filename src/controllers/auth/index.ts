@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
-import { ob_null } from '../../helpers';
+import { ob_null } from '@/helpers/object';
 
 /**
  * Login
  */
 export async function login(req: Request, res: Response) {
-    let form = req.body;
+    const form = req.body;
 
     // login
     const { data, error } = await supabase.auth.signInWithPassword({
@@ -38,7 +38,8 @@ export async function logout(req: Request, res: Response) {
             name: 'logout',
             version: '1.0.0'
         },
-        error: error?.message
+        error: error?.message,
+        success: !error ? "Successfully logged out" : undefined
     });
 }
 
