@@ -6,6 +6,7 @@ import { createClient } from '@supabase/supabase-js';
 import { app_auth } from './middlewares/auth';
 import apiRoute from '@/routes/api';
 import authRoute from '@/routes/auth';
+import webRoute from '@/routes/web';
 
 const app: Express = express();
 const port = process.env.PORT;
@@ -31,6 +32,9 @@ app.use('/api', apiRoute);
 
 // load auth modules
 app.use('/auth', authRoute);
+
+// Frontend
+app.use(webRoute);
 
 // Handle 404
 app.use((req, res) => {
