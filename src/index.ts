@@ -3,7 +3,6 @@ import 'module-alias/register';
 
 import express, {Express} from 'express';
 import { createClient } from '@supabase/supabase-js';
-import { app_auth } from './middlewares/auth';
 import apiRoute from '@/routes/api';
 import authRoute from '@/routes/auth';
 import webRoute from '@/routes/web';
@@ -24,8 +23,6 @@ globalThis.supabase = createClient(supabaseUrl, supabaseKey, {
   }
 })
 
-// auth middleware
-app.use(app_auth());
 
 // load api modules
 app.use('/api', apiRoute);

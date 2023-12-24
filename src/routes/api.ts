@@ -2,6 +2,7 @@ import { Router } from 'express';
 import registerRoute from '@/helpers/routes';
 import * as kitchenController from '@/controllers/api/inventory/kitchen';
 import * as stockroomController from '@/controllers/api/inventory/stockroom';
+import { useAuth } from '@/middlewares/auth';
 
 /**
  * Api routes
@@ -23,6 +24,10 @@ export const route = registerRoute(routes, "api");
 // Express route
 const router = Router();
 
+/**
+ * Use auth
+ */
+router.use(useAuth());
 
 /**********************
  * Express API routes *

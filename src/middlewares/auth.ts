@@ -1,7 +1,7 @@
-import { Request, Response, NextFunction } from 'express';
+import { type Request, type Response, type NextFunction } from 'express';
 
 export const app_auth = () =>
-    async function (req: Request, res: Response, next: NextFunction) {
+    async (req: Request, res: Response, next: NextFunction) => {
         // skip auth routes
         if (req.path.includes("/auth/")) {
             return next();
@@ -14,7 +14,7 @@ export const app_auth = () =>
         } = await supabase.auth.getUser();
 
         // require auth
-        if ( ! user) {
+        if ( !user && req.path.includes("/api/")) {
             return res.json({
                 api: {
                     name: "sculleryflow",
@@ -27,3 +27,27 @@ export const app_auth = () =>
         // allow access
         next();
     };
+
+export const useAuth = () =>
+    async (req: Request, res: Response, next: NextFunction ) => {
+        // get session user
+        const {
+            data: {
+                user
+            },
+        } = await supabase.auth.getUser();
+
+        // require auth
+        if ( !user ) {
+            return res.json({
+                api: {
+                    name: "sculleryflow",
+                    version: "1.0.0",
+                },
+                error: "unauthorized",
+            });
+        }
+
+        // allow access
+        next();
+    }
