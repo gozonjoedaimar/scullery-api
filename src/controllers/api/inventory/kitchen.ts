@@ -7,7 +7,7 @@ type Controller = () => (req: Request, res: Response) => void;
 export const index : Controller = () => (req, res) => {
     res.json({
         message: "Kitchen API",
-        route: route('inventory-kitchen').get()
+        route: route('inventory-kitchen').path()
     });
 }
 

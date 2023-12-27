@@ -21,12 +21,12 @@ export const route = registerRoute(routes, "auth");
  *****************/
 
 // POST /auth/login
-router.post(route('login').toString(), login);
+router.post(route('login').get(), login);
 
 // POST /auth/logout
-router.post(route('logout').toString(), logout);
+router.post(route('logout').get(), logout);
 
 // POST /auth/user
-router.post(route('user').toString(), getUser);
+router.post(route('user').get(), getUser);
 
 export default router;

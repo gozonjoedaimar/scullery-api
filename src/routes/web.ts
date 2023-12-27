@@ -17,7 +17,7 @@ export const route = registerRoute(routes);
  */
 
 // HOME
-router.get(route('home').toString(), (req, res) => {
+router.get(route('home').get(), (req, res) => {
     res.send('Sculleryflow API');
 })
 
