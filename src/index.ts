@@ -6,6 +6,7 @@ import { createClient } from '@supabase/supabase-js';
 import apiRoute from '@/routes/api';
 import authRoute from '@/routes/auth';
 import webRoute from '@/routes/web';
+import mongoose from 'mongoose';
 
 const app: Express = express();
 const port = process.env.PORT;
@@ -23,6 +24,15 @@ globalThis.supabase = createClient(supabaseUrl, supabaseKey, {
   }
 })
 
+mongoose.connect(process.env.MONGO_URL);
+
+mongoose.connection.on('connected', () => {
+  console.log('Connected to MongoDB');
+});
+
+mongoose.connection.on('error', (err) => {
+  console.log('Error connecting to MongoDB', err);
+});
 
 // load api modules
 app.use('/api', apiRoute);

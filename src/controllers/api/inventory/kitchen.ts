@@ -1,33 +1,14 @@
 import { type Request, type Response } from 'express';
-import { route } from '@/routes/api'
+import Menu from '@/models/Menu';
 
 type Controller = () => (req: Request, res: Response) => void;
 
-// GET /api/inventory/kitchen
-export const index : Controller = () => (req, res) => {
-    res.json({
-        message: "Kitchen API",
-        route: route('inventory-kitchen').path()
-    });
-}
-
 // GET /api/inventory/kitchen/menu
-export const menu : Controller = () => (req, res) => {
-    res.json({
-        message: "Kitchen Menu"
-    });
-}
+export const menu : Controller = () => async (req, res) => {
+    const menu = await Menu.find({}).lean().exec().catch( e => console.log(e) );
 
-// GET /api/inventory/kitchen/menu/item
-export const item: Controller = () => (req, res) => {
-	res.json({
-		message: "Kitchen Item",
-	});
+    res.json({
+        message: "Kitchen Menu",
+        menu
+    });
 };
-
-// GET /api/version
-export const version: Controller = () => (req, res) => {
-    res.json({
-        version:"v1"
-    });
-}
