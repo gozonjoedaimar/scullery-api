@@ -1,8 +1,6 @@
-import { SupabaseClient } from "@supabase/supabase-js";
-
 export {};
 
-/* declare global variables */
 declare global {
-  var supabase: SupabaseClient;
+	// biome-ignore lint: var is used for declaring globalThis props
+	var supabase: import("@supabase/supabase-js").SupabaseClient;
 }
