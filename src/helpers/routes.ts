@@ -9,19 +9,24 @@ class RouteString {
 		this.parent = parent;
 	}
 
+	/**
+	 * Set route value
+	 */
 	set(value: string) {
 		this.value = value;
 	}
 
+	/**
+	 * Access full route path
+	 */
+	path() {
+		return this.parent ? `/${sanitize(this.parent)}/${sanitize(this.value)}` : this.value;
+	}
+
+	/**
+	 * Access route value
+	 */
 	get() {
-		return this.parent ? `/${this.parent}/${this.value.slice(1)}` : this.value;
-	}
-
-	toString() {
-		return this.value;
-	}
-
-	valueOf() {
 		return this.value;
 	}
 }
@@ -35,7 +40,15 @@ function route(this: {_ob: KeyStringObject, parent: string}, name: string) {
     const str = new RouteString(name, this.parent);
 
     if(typeof this._ob !== 'undefined') {
-        str.set(`/${this._ob[name]}` ?? "");
+        str.set(`/${sanitize(this._ob[name])}` ?? "");
     }
     return str;
+}
+
+function sanitize(str: string) {
+	let str_ = str.trim();
+	if (str_.startsWith('/')) {
+		str_ = str_.slice(1);
+	}
+	return str_;
 }

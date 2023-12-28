@@ -34,14 +34,14 @@ router.use(useAuth());
  **********************/
 
 // Helpers
-router.get(route('version').toString(), kitchenController.version()); // version
+router.get(route('version').get(), kitchenController.version()); // version
 
 // KITCHEN
-router.get(route('inventory-kitchen').toString(), kitchenController.index()); // index
-router.get(route('inventory-menu').toString(), kitchenController.menu()); // menu 
-router.get(route('inventory-menu-item').toString(), kitchenController.item()); // menu item
+router.get(route('inventory-kitchen').get(), kitchenController.index()); // index
+router.get(route('inventory-menu').get(), kitchenController.menu()); // menu 
+router.get(route('inventory-menu-item').get(), kitchenController.item()); // menu item
 
 // STOCKROOM
-router.get(route('inventory-stockroom').toString(), stockroomController.index()); // index
+router.get(route('inventory-stockroom').get(), stockroomController.index()); // index
 
 export default router;
