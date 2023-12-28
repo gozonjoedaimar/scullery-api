@@ -1,10 +1,9 @@
-import { Request, Response } from 'express';
 import { ob_null } from '@/helpers/object';
 
 /**
  * Login
  */
-export async function login(req: Request, res: Response) {
+export const login: RouteHandler = async (req, res) => {
     const form = req.body;
 
     // login
@@ -29,7 +28,7 @@ export async function login(req: Request, res: Response) {
 /**
  * Logout
  */
-export async function logout(req: Request, res: Response) {
+export const logout: RouteHandler = async (req, res) => {
     // logout
     const { error } = await supabase.auth.signOut();
 
@@ -46,7 +45,7 @@ export async function logout(req: Request, res: Response) {
 /**
  * Get user
  */
-export async function getUser(req: Request, res: Response) {
+export const getUser: RouteHandler = async (req, res) => {
     const { data: { user } } = await supabase.auth.getUser();
 
     res.json({
