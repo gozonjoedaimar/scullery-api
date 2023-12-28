@@ -2,6 +2,7 @@ import { Router } from 'express';
 import registerRoute from '@/helpers/routes';
 import * as kitchenController from '@/controllers/api/inventory/kitchen';
 import * as stockroomController from '@/controllers/api/inventory/stockroom';
+import * as configController from '@/controllers/api/config';
 import { useAuth } from '@/middlewares/auth';
 
 /**
@@ -34,7 +35,7 @@ router.use(useAuth());
  **********************/
 
 // Helpers
-router.get(route('version').get(), kitchenController.version()); // version
+router.get(route('version').get(), configController.version()); // version
 
 // KITCHEN
 router.get(route('inventory-kitchen').get(), kitchenController.index()); // index
