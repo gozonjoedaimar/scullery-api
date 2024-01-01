@@ -15,13 +15,13 @@ export const init = () => {
 
 export const login = async (email: string, password: string) => {
     // login
-    const { data, error } = await supabase.auth.signInWithPassword({
+    const { data: { session }, error } = await supabase.auth.signInWithPassword({
         email,
         password
     });
 
     return {
-        data,
+        session,
         error
     }
 }

@@ -14,17 +14,17 @@ export const login: RouteHandler = async (req, res) => {
     const auth = await Auth();
 
     // login
-    const { data, error } = await auth.login(email, password);
+    const { session, error } = await auth.login(email, password);
 
     // get session
-    const { user, ...session } = data?.session || {};
+    const { user, ...session_data } = session || {};
 
     res.json({
         api: {
             name: 'login',
             version: '1.0.0'
         },
-        session: ob_null(session),
+        session: ob_null(session_data),
         error: error?.message
     });
 }

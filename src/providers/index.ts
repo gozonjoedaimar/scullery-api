@@ -12,9 +12,14 @@ export const init = () => {
 
 type AuthProvider = {
     login: (email: string, password: string) => Promise<{
-        data?: {
-            session: { [key:string]: string }
-        }
+        session?: {
+            access_token: string,
+            expires_in: number,
+            expires_at: string,
+            refresh_token: string,
+            token_type: string,
+            user: { [key:string]: string|number }
+        },
         error?: Error
     }>,
     logout: () => Promise<{
