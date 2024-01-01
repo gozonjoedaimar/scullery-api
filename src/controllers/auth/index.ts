@@ -62,3 +62,21 @@ export const getUser: RouteHandler = async (req, res) => {
         user
     });
 }
+
+type RegisterData = {
+    email: string;
+    password: string;
+}
+
+/**
+ * Register
+ */
+export const register: RouteHandler = async (req, res) => {
+    const auth = await Auth();
+    const { email, password } = req.body as RegisterData;
+    const { error } = await auth.register({ email, password });
+    res.json({
+        error: error?.message,
+        success: !error ? "Successfully registered" : undefined
+    })
+}
