@@ -1,9 +1,11 @@
+import { Auth } from 'app/providers';
 import { type Request, type Response, type NextFunction } from 'express';
 
 type FunctionMiddleware = () => (req: Request, res: Response, next: NextFunction) => Promise<Response|undefined>;
 
 export const app_auth: FunctionMiddleware = () =>
     async (req, res, next) => {
+        const auth = await Auth();
         // skip auth routes
         if (req.path.includes("/auth/")) {
             next();
@@ -11,10 +13,8 @@ export const app_auth: FunctionMiddleware = () =>
         }
         // get session user
         const {
-            data: {
-                user
-            },
-        } = await supabase.auth.getUser();
+            user
+        } = await auth.user();
 
         // require auth
         if ( !user && req.path.includes("/api/")) {
@@ -33,12 +33,11 @@ export const app_auth: FunctionMiddleware = () =>
 
 export const useAuth: FunctionMiddleware = () =>
     async (req, res, next ) => {
+        const auth = await Auth();
         // get session user
         const {
-            data: {
-                user
-            },
-        } = await supabase.auth.getUser();
+            user
+        } = await auth.user();
 
         // require auth
         if ( !user ) {

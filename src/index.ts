@@ -2,27 +2,19 @@ import 'dotenv/config';
 import 'module-alias/register';
 
 import express, {Express} from 'express';
-import { createClient } from '@supabase/supabase-js';
 import apiRoute from 'app/routes/api';
 import authRoute from 'app/routes/auth';
 import webRoute from 'app/routes/web';
 import mongoose from 'mongoose';
+import * as providers from 'app/providers';
 
 const app: Express = express();
 const port = process.env.PORT;
 
 app.use(express.json());
 
-// Init supabase
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_KEY;
-globalThis.supabase = createClient(supabaseUrl, supabaseKey, {
-  auth: {
-    autoRefreshToken: false,
-    persistSession: false,
-    detectSessionInUrl: false
-  }
-})
+// Init providers
+providers.init();
 
 mongoose.connect(process.env.MONGO_URL);
 
