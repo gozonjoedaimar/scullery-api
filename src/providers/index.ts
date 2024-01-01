@@ -33,6 +33,14 @@ type AuthProvider = {
     user: () => Promise<{
         user?: { [key:string]: string }
     }>
+    register: ({
+        email, password
+    }: {
+        email: string;
+        password: string;
+    }) => Promise<{
+        error?: Error
+    }>,
 }
 
 export const Auth = (): Promise<AuthProvider> => import(`app/providers/auth/${DEFAULT_PROVIDER}`);

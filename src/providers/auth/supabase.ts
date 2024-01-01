@@ -42,3 +42,13 @@ export const user = async () => {
         user
     }
 }
+
+export const register = async ({ email, password }: { email: string; password: string; }) => {
+    const { data, error } = await supabase.auth.signUp({email, password});
+
+    return {
+        error,
+        success: !error ? "Successfully registered" : undefined,
+        data
+    }
+}
