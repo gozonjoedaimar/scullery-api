@@ -1,4 +1,4 @@
-import Menu from '@/models/Menu';
+import Menu from 'app/models/Menu';
 
 // GET /api/inventory/kitchen/menu
 export const menu : Controller = () => async (req, res) => {

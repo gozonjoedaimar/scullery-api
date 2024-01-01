@@ -1,9 +1,9 @@
 import { Router } from 'express';
 const router = Router();
 
-import { login, logout, getUser } from '@/controllers/auth';
+import { login, logout, getUser } from 'app/controllers/auth';
 
-import registerRoute from '@/helpers/routes';
+import registerRoute from 'app/helpers/routes';
 
 /**
  * Auth Routes

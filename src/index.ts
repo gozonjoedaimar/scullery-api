@@ -3,9 +3,9 @@ import 'module-alias/register';
 
 import express, {Express} from 'express';
 import { createClient } from '@supabase/supabase-js';
-import apiRoute from '@/routes/api';
-import authRoute from '@/routes/auth';
-import webRoute from '@/routes/web';
+import apiRoute from 'app/routes/api';
+import authRoute from 'app/routes/auth';
+import webRoute from 'app/routes/web';
 import mongoose from 'mongoose';
 
 const app: Express = express();
