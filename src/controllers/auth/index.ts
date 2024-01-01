@@ -1,26 +1,30 @@
 import { ob_null } from 'app/helpers/object';
+import { Auth } from 'app/providers';
+
+type FormInput = {
+    email: string,
+    password: string,
+}
 
 /**
  * Login
  */
 export const login: RouteHandler = async (req, res) => {
-    const form = req.body;
+    const {email, password}: FormInput = req.body;
+    const auth = await Auth();
 
     // login
-    const { data, error } = await supabase.auth.signInWithPassword({
-        email: form.email,
-        password: form.password
-    });
+    const { session, error } = await auth.login(email, password);
 
     // get session
-    const { user, ...session } = data.session || {};
+    const { user, ...session_data } = session || {};
 
     res.json({
         api: {
             name: 'login',
             version: '1.0.0'
         },
-        session: ob_null(session),
+        session: ob_null(session_data),
         error: error?.message
     });
 }
@@ -29,8 +33,9 @@ export const login: RouteHandler = async (req, res) => {
  * Logout
  */
 export const logout: RouteHandler = async (req, res) => {
+    const auth = await Auth();
     // logout
-    const { error } = await supabase.auth.signOut();
+    const { error } = await auth.logout();
 
     res.json({
         api: {
@@ -46,7 +51,8 @@ export const logout: RouteHandler = async (req, res) => {
  * Get user
  */
 export const getUser: RouteHandler = async (req, res) => {
-    const { data: { user } } = await supabase.auth.getUser();
+    const auth = await Auth();
+    const { user } = await auth.user();
 
     res.json({
         api: {
