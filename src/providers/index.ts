@@ -1,13 +1,18 @@
-// import providers
+// auth providers
 import { init as supabaseInit } from 'app/providers/auth/supabase';
+// db providers
+import { init as mongodbInit } from 'app/providers/db/mongo';
 
 // env provider
 const DEFAULT_PROVIDER = process.env.AUTH_PROVIDER || 'supabase';
 
 // Init providers
 export const init = () => {
-    // register provider config here
+    // auth providers
     supabaseInit();
+
+    // db providers
+    mongodbInit();
 }
 
 type AuthProvider = {

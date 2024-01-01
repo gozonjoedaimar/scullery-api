@@ -5,7 +5,6 @@ import express, {Express} from 'express';
 import apiRoute from 'app/routes/api';
 import authRoute from 'app/routes/auth';
 import webRoute from 'app/routes/web';
-import mongoose from 'mongoose';
 import * as providers from 'app/providers';
 
 const app: Express = express();
@@ -15,16 +14,6 @@ app.use(express.json());
 
 // Init providers
 providers.init();
-
-mongoose.connect(process.env.MONGO_URL);
-
-mongoose.connection.on('connected', () => {
-  console.log('Connected to MongoDB');
-});
-
-mongoose.connection.on('error', (err) => {
-  console.log('Error connecting to MongoDB', err);
-});
 
 // load api modules
 app.use('/api', apiRoute);
