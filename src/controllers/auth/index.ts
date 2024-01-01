@@ -1,4 +1,4 @@
-import { ob_null } from '@/helpers/object';
+import { ob_null } from 'app/helpers/object';
 
 /**
  * Login

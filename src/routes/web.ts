@@ -1,4 +1,4 @@
-import registerRoute from '@/helpers/routes';
+import registerRoute from 'app/helpers/routes';
 import { Router } from 'express';
 const router = Router();
 

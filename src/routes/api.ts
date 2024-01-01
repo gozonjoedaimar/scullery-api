@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import registerRoute from '@/helpers/routes';
-import * as kitchenController from '@/controllers/api/inventory/kitchen';
-import * as stockroomController from '@/controllers/api/inventory/stockroom';
-import * as configController from '@/controllers/api/config';
-import { useAuth } from '@/middlewares/auth';
+import registerRoute from 'app/helpers/routes';
+import * as kitchenController from 'app/controllers/api/inventory/kitchen';
+import * as stockroomController from 'app/controllers/api/inventory/stockroom';
+import * as configController from 'app/controllers/api/config';
+import { useAuth } from 'app/middlewares/auth';
 
 /**
  * Api routes
