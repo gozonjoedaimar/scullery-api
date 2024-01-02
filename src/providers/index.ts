@@ -31,7 +31,10 @@ type AuthProvider = {
         error?: Error
     }>,
     user: (bearer?: string) => Promise<{
-        user?: { [key:string]: string }
+        user?: {
+            [key:string]: string,
+            email: string
+        }
     }>
     register: ({
         email, password

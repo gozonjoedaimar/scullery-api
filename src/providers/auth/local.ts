@@ -6,6 +6,10 @@ import jwt from 'jsonwebtoken';
 import User from 'app/models/User';
 import Token from 'app/models/Token';
 
+type UserData = {
+	email?: string;
+}
+
 export const login = async (email: string, password: string) => {
 	// login logic
 	const user = await User.findOne({email}).lean().exec().catch( e => console.log(e) );
@@ -35,13 +39,13 @@ export const logout = async (bearer?: string) => {
 	// logout logic
 	const active = await user(bearer || '');
 
-	if (!active?.user) {
+	if (!active?.user?.email) {
 		return {
 			error: new Error("Invalid session")
 		}
 	}
 
-	await Token.deleteMany({ email: active.user }).exec().catch( e => console.log(e) );
+	await Token.deleteMany({ email: active.user.email }).exec().catch( e => console.log(e) );
 
 	return {
 		success: true
@@ -50,7 +54,7 @@ export const logout = async (bearer?: string) => {
 
 type Verified = { email: string; } | null;
 
-export const user = async (bearer: string) => {
+export const user = async (bearer: string): Promise<{ user: UserData | undefined }> => {
 	let verified: Verified = null;
 	// get auth bearer
 	try {
@@ -65,7 +69,7 @@ export const user = async (bearer: string) => {
 	const active = await Token.exists({ token: bearer, email: verified?.email }).exec().catch( e => console.log(e) );
 
 	return {
-		user: active ? verified?.email: undefined,
+		user: active ? { email: verified?.email}: undefined,
 	};
 };
 
