@@ -7,6 +7,7 @@ declare global {
       SUPABASE_URL: string;
       SUPABASE_KEY: string;
       MONGO_URL: string;
+      JWT_SECRET: string;
     }
   }
 }

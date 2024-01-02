@@ -1,9 +1,18 @@
-function createUser(email: string, password: string) {
-  console.log('Creating user...');
-  // create user logic
-  console.log('Script ended.');
-}
+import mongoose, { Schema, Model, Document } from "mongoose";
 
-export default {
-  createUser
-}
+type UserData = {
+	email: string;
+	password: string;
+} & Document;
+
+type UserModel = Model<UserData>;
+
+// user schema
+const UserSchema = new Schema<UserData, UserModel>({
+	email: Schema.Types.String,
+	password: Schema.Types.String,
+});
+
+const User = mongoose.model("users", UserSchema);
+
+export default User;

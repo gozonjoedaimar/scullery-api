@@ -27,11 +27,14 @@ type AuthProvider = {
         },
         error?: Error
     }>,
-    logout: () => Promise<{
+    logout: (bearer?: string) => Promise<{
         error?: Error
     }>,
-    user: () => Promise<{
-        user?: { [key:string]: string }
+    user: (bearer?: string) => Promise<{
+        user?: {
+            [key:string]: string,
+            email: string
+        }
     }>
     register: ({
         email, password
