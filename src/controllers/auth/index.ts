@@ -34,8 +34,12 @@ export const login: RouteHandler = async (req, res) => {
  */
 export const logout: RouteHandler = async (req, res) => {
     const auth = await Auth();
+
+    // get auth bearer
+    const bearer = req.headers.authorization?.split(" ")[1];
+
     // logout
-    const { error } = await auth.logout();
+    const { error } = await auth.logout(bearer);
 
     res.json({
         api: {

@@ -31,11 +31,20 @@ export const login = async (email: string, password: string) => {
 	};
 };
 
-export const logout = async () => {
+export const logout = async (bearer?: string) => {
 	// logout logic
+	const active = await user(bearer || '');
+
+	if (!active?.user) {
+		return {
+			error: new Error("Invalid session")
+		}
+	}
+
+	await Token.deleteMany({ email: active.user }).exec().catch( e => console.log(e) );
 
 	return {
-		error: null,
+		success: true
 	};
 };
 
@@ -53,8 +62,10 @@ export const user = async (bearer: string) => {
 		}
 	}
 
+	const active = await Token.exists({ token: bearer, email: verified?.email }).exec().catch( e => console.log(e) );
+
 	return {
-		user: verified?.email,
+		user: active ? verified?.email: undefined,
 	};
 };
 
@@ -110,6 +121,14 @@ async function generateSession(email: string)
 {
 	// generate jwt token
 	const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '30m' });
+
+	const accessToken = new Token({
+		token,
+		email,
+		type: 'access'
+	});
+
+	await accessToken.save();
 
 	// generate refresh token
 	const refreshToken = crypto.randomBytes(64).toString('hex');

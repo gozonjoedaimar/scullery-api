@@ -39,7 +39,7 @@ export const useAuth: FunctionMiddleware = () =>
     async (req, res, next ) => {
         const auth = await Auth();
 
-        console.log("BEARER::::::", req.headers.authorization);
+        // console.log("BEARER::::::", req.headers.authorization);
 
         // get auth bearer
         const bearer = req.headers.authorization?.split(" ")[1];

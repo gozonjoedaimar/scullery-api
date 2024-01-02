@@ -27,7 +27,7 @@ type AuthProvider = {
         },
         error?: Error
     }>,
-    logout: () => Promise<{
+    logout: (bearer?: string) => Promise<{
         error?: Error
     }>,
     user: (bearer?: string) => Promise<{
