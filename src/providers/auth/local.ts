@@ -1,5 +1,10 @@
 import bcrypt from 'bcrypt';
+import crypto from 'crypto';
+import { subDays } from 'date-fns';
+import jwt from 'jsonwebtoken';
+
 import User from 'app/models/User';
+import Token from 'app/models/Token';
 
 export const login = async (email: string, password: string) => {
 	// login logic
@@ -8,8 +13,10 @@ export const login = async (email: string, password: string) => {
 	let error = null;
 
 	if (user && verifyHash(password, user.password)) {
+		const { token, refreshToken } = await generateSession(email);
 		session = {
-			status: "success!"
+			access_token: token,
+			refresh_token: refreshToken
 		}
 	}
 	else {
@@ -32,12 +39,22 @@ export const logout = async () => {
 	};
 };
 
-export const user = async () => {
-	// get session user
+type Verified = { email: string; } | null;
 
+export const user = async (bearer: string) => {
+	let verified: Verified = null;
+	// get auth bearer
+	try {
+		verified = jwt.verify(bearer, process.env.JWT_SECRET) as Verified;
+	}
+	catch (e) {
+		if (e instanceof Error) {
+			console.log('jwt error', e.message);
+		}
+	}
 
 	return {
-		user: "admin",
+		user: verified?.email,
 	};
 };
 
@@ -84,4 +101,44 @@ function hashPassword( value: string )
 function verifyHash( value: string, hash: string )
 {
 	return bcrypt.compareSync(value, hash);
+}
+
+/**
+ * Generate jwt session
+ */
+async function generateSession(email: string) 
+{
+	// generate jwt token
+	const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '30m' });
+
+	// generate refresh token
+	const refreshToken = crypto.randomBytes(64).toString('hex');
+
+	const tokenData = new Token({
+		token: refreshToken,
+		email,
+	});
+
+	await tokenData.save();
+
+	return { token, refreshToken };
+}
+
+/**
+ * Refresh jwt session
+ */
+async function refreshSession(oldRefreshToken: string, email: string)
+{
+	// check token in database
+	const savedToken = await Token.findOne({ token: oldRefreshToken, email, date: { $gte: subDays(new Date(), 1) } }).lean().exec();
+
+	if (!savedToken) {
+		return {
+			error: "Invalid refresh token",
+			token: null,
+			refreshToken: null
+		}
+	}
+
+	return generateSession(email);
 }

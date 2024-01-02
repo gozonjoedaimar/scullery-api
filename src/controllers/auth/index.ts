@@ -52,7 +52,11 @@ export const logout: RouteHandler = async (req, res) => {
  */
 export const getUser: RouteHandler = async (req, res) => {
     const auth = await Auth();
-    const { user } = await auth.user();
+
+    // get auth bearer
+    const bearer = req.headers.authorization?.split(" ")[1];
+
+    const { user } = await auth.user(bearer);
 
     res.json({
         api: {

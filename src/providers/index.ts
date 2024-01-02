@@ -30,7 +30,7 @@ type AuthProvider = {
     logout: () => Promise<{
         error?: Error
     }>,
-    user: () => Promise<{
+    user: (bearer?: string) => Promise<{
         user?: { [key:string]: string }
     }>
     register: ({
