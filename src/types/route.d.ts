@@ -1,10 +1,13 @@
 export {};
 
+type ExpressRequest = import('express').Request;
+type ExpressResponse = import('express').Response;
+
 declare global {
 	type RouteHandler = (
-		req: import("express").Request,
-		res: import("express").Response,
-	) => Promise<void>|void;
+		req: ExpressRequest,
+		res: ExpressResponse,
+	) => Promise<ExpressResponse>|Promise<void>|ExpressResponse|void;
 
 	// controller type
 	type Controller = () => RouteHandler;

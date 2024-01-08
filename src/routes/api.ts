@@ -14,6 +14,7 @@ const routes = {
 
     // inventory kitchen
     "inventory-menu": "inventory/kitchen/menu",
+    "inventory-menu-item": "inventory/kitchen/menu/:id",
 
     // inventory stockroom
     "inventory-stockroom": "inventory/stockroom",
@@ -37,6 +38,7 @@ router.get(route('version').get(), configController.version()); // version
 
 // KITCHEN
 router.get(route('inventory-menu').get(), kitchenController.menu()); // menu 
+router.get(route('inventory-menu-item').get(), kitchenController.menuItem()); // menu item
 
 // STOCKROOM
 router.get(route('inventory-stockroom').get(), stockroomController.index()); // index
