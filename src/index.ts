@@ -1,5 +1,6 @@
 import 'dotenv/config';
-import 'module-alias/register';
+import env from './env';
+if (env === 'production') require('module-alias/register');
 
 import express, {Express} from 'express';
 import apiRoute from 'app/routes/api';
