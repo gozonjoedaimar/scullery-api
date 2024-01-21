@@ -15,6 +15,9 @@ const routes = {
     // inventory kitchen
     "inventory-menu": "inventory/kitchen/menu",
     "inventory-menu-item": "inventory/kitchen/menu/:id",
+    "inventory-menu-item-add": "inventory/kitchen/menu/add",
+    "inventory-menu-item-edit": "inventory/kitchen/menu/edit/:id",
+    "inventory-menu-item-delete": "inventory/kitchen/menu/delete/:id",
 
     // inventory stockroom
     "inventory-stockroom": "inventory/stockroom",
@@ -39,6 +42,9 @@ router.get(route('version').get(), configController.version()); // version
 // KITCHEN
 router.get(route('inventory-menu').get(), kitchenController.menu()); // menu 
 router.get(route('inventory-menu-item').get(), kitchenController.menuItem()); // menu item
+router.post(route('inventory-menu-item-add').get(), kitchenController.addMenuItem()); // add menu item
+router.post(route('inventory-menu-item-edit').get(), kitchenController.editMenuItem()); // add menu item
+router.post(route('inventory-menu-item-delete').get(), kitchenController.deleteMenuItem()); // add menu item
 
 // STOCKROOM
 router.get(route('inventory-stockroom').get(), stockroomController.index()); // index
