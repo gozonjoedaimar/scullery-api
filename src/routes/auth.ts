@@ -9,10 +9,11 @@ import registerRoute from 'app/helpers/routes';
  * Auth Routes
  */
 const routes = {
-    login: "login",
-    logout: "logout",
-    user: "user",
-    register: "register",
+	// NOTE: format => name: 'path'
+	login: "login",
+	logout: "logout",
+	user: "user",
+	register: "register",
 };
 
 export const route = registerRoute(routes, "auth");
@@ -22,15 +23,15 @@ export const route = registerRoute(routes, "auth");
  *****************/
 
 // POST /auth/login
-router.post(route('login').get(), login);
+router.post(route('login').path(), login);
 
 // POST /auth/logout
-router.post(route('logout').get(), logout);
+router.post(route('logout').path(), logout);
 
 // POST /auth/user
-router.post(route('user').get(), getUser);
+router.post(route('user').path(), getUser);
 
 // POST /auth/register
-router.post(route('register').get(), register);
+router.post(route('register').path(), register);
 
 export default router;

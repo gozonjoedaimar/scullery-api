@@ -6,8 +6,9 @@ const router = Router();
  * Frontend Routes
  */
 const routes = {
-    home: '/',
-}
+	// NOTE: format => name: 'path'
+	home: "/",
+};
 
 // register home
 export const route = registerRoute(routes);
@@ -17,7 +18,7 @@ export const route = registerRoute(routes);
  */
 
 // HOME
-router.get(route('home').get(), (req, res) => {
+router.get(route('home').path(), (req, res) => {
     res.send('Sculleryflow API');
 })
 

@@ -1,3 +1,5 @@
+import app_config from "app/config/app";
+
 type KeyStringObject = { [key: string]: string };
 
 class RouteString {
@@ -19,14 +21,16 @@ class RouteString {
 	/**
 	 * Access full route path
 	 */
-	path() {
-		return this.parent ? `/${sanitize(this.parent)}/${sanitize(this.value)}` : this.value;
+	url() {
+		const path = this.parent ? `/${sanitize(this.parent)}/${sanitize(this.value)}` : this.value;
+		const url = app_config('url') + path;
+		return url;
 	}
 
 	/**
 	 * Access route value
 	 */
-	get() {
+	path() {
 		return this.value;
 	}
 }
