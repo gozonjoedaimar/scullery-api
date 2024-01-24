@@ -5,6 +5,7 @@ pipeline {
             steps {
                 sh 'npm install'
                 sh 'npm run build'
+                sh 'touch .build_$(date +%Y%m%d%H%M%S)'
             }
         }
     }
