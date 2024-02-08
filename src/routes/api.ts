@@ -3,6 +3,7 @@ import registerRoute from 'app/helpers/routes';
 import * as kitchenController from 'app/controllers/api/inventory/kitchen';
 import * as stockroomController from 'app/controllers/api/inventory/stockroom';
 import * as configController from 'app/controllers/api/config';
+import * as menuController from 'app/controllers/api/menu';
 import { useAuth } from 'app/middlewares/auth';
 
 /**
@@ -12,6 +13,13 @@ const routes = {
 	// NOTE: format => name: 'path'
 	// helpers
 	version: "version",
+
+	// menu
+	menu: "menu",
+	"menu-item": "menu/:id",
+	"menu-item-add": "menu/add",
+	"menu-item-edit": "menu/edit/:id",
+	"menu-item-delete": "menu/delete/:id",
 
 	// inventory kitchen
 	"inventory-menu": "inventory/kitchen/menu",
@@ -39,6 +47,13 @@ router.use(useAuth());
 
 // Helpers
 router.get(route('version').path(), configController.version()); // version
+
+// MENU
+router.get(route('menu').path(), menuController.menu()); // menu 
+router.get(route('menu-item').path(), menuController.menuItem()); // menu item
+router.post(route('menu-item-add').path(), menuController.addMenuItem()); // add menu item
+router.post(route('menu-item-edit').path(), menuController.editMenuItem()); // add menu item
+router.post(route('menu-item-delete').path(), menuController.deleteMenuItem()); // add menu item
 
 // KITCHEN
 router.get(route('inventory-menu').path(), kitchenController.menu()); // menu 
