@@ -33,6 +33,9 @@ const MenuSchema = new Schema<Menu, Model<Menu, Record<string, string>, MenuMeth
 }, {
     methods: {
         getItems: async function() {
+
+            if (!this.items) return [];
+
             const invalid_ids = [] as Item[];
             const ids = this.items?.reduce((acc: string[], id) => {
                 if (!Types.ObjectId.isValid(id)) {
