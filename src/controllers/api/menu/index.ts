@@ -2,15 +2,26 @@ import { format_error } from 'app/helpers/forms';
 import Menu from 'app/models/Menu';
 import { z } from 'zod';
 
+type ProcedureData = {
+	step: string;
+};
+
+// Menu item request schema
 const MenuItem = z.object({
-    name: z.string().min(3).max(255)
+    name: z.string().min(3).max(255),
+	procedure: z.string().min(3).array().optional(),
 });
+
+type MenuItemData = z.infer<typeof MenuItem>;
+
+type MenuData = {
+	name: string;
+	procedure?: ProcedureData[];
+};
 
 type MenuItemParams = {
 	id: string;
 };
-
-type MenuItemData = z.infer<typeof MenuItem>;
 
 // GET /api/menu
 export const menu : Controller = () => async (req, res) => {
@@ -30,6 +41,21 @@ export const menuItem: Controller = () => async (req, res) => {
     if (!item) return res.status(404).json({ message: "Item not found" });
 
     return res.json(item);
+}
+
+function processProcedures(procedures: string[]): ProcedureData[] {
+	try{
+		const data = procedures.filter( step => step.trim().length > 0 );
+		const steps = [] as ProcedureData[];
+		for (let i = 0; i < data.length; i++) {
+			const step = data[i];
+			steps.push({step});
+		}
+		return steps;
+	} catch (error) {
+		console.log((error as Error).message);
+		return [];
+	}
 }
 
 // POST /api/menu/add
@@ -56,7 +82,13 @@ export const addMenuItem: Controller = () => async (req, res) => {
     }
 
     try {
-        const item = await Menu.create(data);
+		const menu: MenuData = { name: data.name }
+
+		if (data.procedure) {
+			menu.procedure = processProcedures(data.procedure);
+		}
+
+        const item = await Menu.create(menu);
         const { _id, name } = item.toJSON();
         return res.json({
             status: "created",
@@ -102,14 +134,20 @@ export const editMenuItem: Controller = () => async (req, res) => {
 	}
 
 	try {
-		item.set(data);
-        await item.save();
+		const menu: MenuData = { name: data.name };
 
-		const { _id, name } = item.toJSON();
+		if (data.procedure) {
+			menu.procedure = processProcedures(data.procedure);
+		}
+
+		item.set(menu);
+		await item.save();
+
+		const { _id, name, procedure } = item.toJSON();
 
 		return res.json({
-            status: "updated",
-			item: { _id, name },
+			status: "updated",
+			item: { _id, name, procedure },
 		});
 	} catch (error) {
 		const e = error as Error;
