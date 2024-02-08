@@ -10,13 +10,16 @@ type ProcedureData = {
 const MenuItem = z.object({
     name: z.string().min(3).max(255),
 	procedure: z.string().min(3).array().optional(),
+	items: z.string().min(3).array().optional()
 });
 
 type MenuItemData = z.infer<typeof MenuItem>;
 
 type MenuData = {
+	_id?: string;
 	name: string;
 	procedure?: ProcedureData[];
+	items?: string[];
 };
 
 type MenuItemParams = {
@@ -26,21 +29,43 @@ type MenuItemParams = {
 // GET /api/menu
 export const menu : Controller = () => async (req, res) => {
     const menu = await Menu.find({}).lean().exec().catch( e => console.log(e) );
+	const list = [];
+	
+	if (menu) {
+		for (const item of menu) {
+			const { _id, name } = item;
+			list.push({ 
+				_id: _id.toString(),
+				name,
+			});
+		}
+	}
 
     res.json({
         message: "Kitchen Menu",
-        menu
+        menu: list
     });
 };
 
 // GET /api/menu/:id
 export const menuItem: Controller = () => async (req, res) => {
     const { id } = req.params as MenuItemParams;
-    const item = await Menu.findOne({ _id: id }).lean().exec().catch( e => console.log(e) );
+    const item = await Menu.findOne({ _id: id }).exec().catch( e => console.log(e) );
 
     if (!item) return res.status(404).json({ message: "Item not found" });
 
-    return res.json(item);
+	const data = {
+		_id: item._id.toString(),
+		name: item.name,
+		procedure: item.procedure || [],
+		items: await item.getItems()
+	};
+
+    return res.json(data);
+}
+
+function processIngredients(ingredients: string[]) {
+	return ingredients.filter( item => item.trim().length > 0 );
 }
 
 function processProcedures(procedures: string[]): ProcedureData[] {
@@ -88,11 +113,20 @@ export const addMenuItem: Controller = () => async (req, res) => {
 			menu.procedure = processProcedures(data.procedure);
 		}
 
+		if (data.items) {
+			menu.items = processIngredients(data.items);
+		}
+
         const item = await Menu.create(menu);
-        const { _id, name } = item.toJSON();
+        const { _id, name, procedure } = item.toJSON();
         return res.json({
             status: "created",
-            menu: {id: _id, name}
+            menu: {
+				id: _id.toString(),
+				name,
+				procedure,
+				items: await item.getItems()
+			}
         });
     }
     catch (error) {
@@ -140,6 +174,10 @@ export const editMenuItem: Controller = () => async (req, res) => {
 			menu.procedure = processProcedures(data.procedure);
 		}
 
+		if (data.items) {
+			menu.items = processIngredients(data.items);
+		}
+
 		item.set(menu);
 		await item.save();
 
@@ -147,7 +185,7 @@ export const editMenuItem: Controller = () => async (req, res) => {
 
 		return res.json({
 			status: "updated",
-			item: { _id, name, procedure },
+			item: { _id, name, procedure, items: await item.getItems() },
 		});
 	} catch (error) {
 		const e = error as Error;
