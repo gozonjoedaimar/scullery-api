@@ -75,6 +75,7 @@ export const user = async (bearer: string): Promise<{ user: UserData | undefined
 
 type RegisterData = {
 	email: string;
+	name: string;
 	password: string;
 }
 

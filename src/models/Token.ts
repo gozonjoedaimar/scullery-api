@@ -1,33 +1,31 @@
-import mongoose, {Schema, Model, Document} from 'mongoose';
+import mongoose, {Schema} from 'mongoose';
 
 type Token = {
     token: string;
     email: string;
     date: Date;
     type: 'refresh' | 'access';
-} & Document;
+};
 
-type TokenModel = Model<Token>;
-
-const TokenSchema: Schema = new Schema<Token, TokenModel>({
+const TokenSchema = new Schema<Token>({
     token: {
-        type: Schema.Types.String,
+        type: String,
         require: true,
     },
     email: {
-        type: Schema.Types.String,
+        type: String,
         require: true,
     },
     date: {
-        type: Schema.Types.Date,
+        type: Date,
         require: true,
         default: Date.now()
     },
     type: {
-        type: Schema.Types.String,
+        type: String,
         require: true,
         default: 'refresh'
     }
 });
 
-export default mongoose.model<Token, TokenModel>('tokens', TokenSchema);
+export default mongoose.model('tokens', TokenSchema);
