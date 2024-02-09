@@ -61,9 +61,9 @@ export const user = async (bearer: string): Promise<{ user: UserData | undefined
 		verified = jwt.verify(bearer, process.env.JWT_SECRET) as Verified;
 	}
 	catch (e) {
-		if (e instanceof Error) {
-			console.log('jwt error', e.message);
-		}
+		// if (e instanceof Error) {
+		// 	console.log('jwt error', e.message);
+		// }
 	}
 
 	const active = await Token.exists({ token: bearer, email: verified?.email }).exec().catch( e => console.log(e) );
