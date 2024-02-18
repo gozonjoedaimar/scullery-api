@@ -148,14 +148,15 @@ export const editMenuItem: Controller = () => async (req, res) => {
 		});
 	}
 
+	// NOTE: make name optional for update
 	// validate
-	const validated = MenuItem.safeParse(data);
+	// const validated = MenuItem.safeParse(data);
 
-	if (!validated.success) {
-		return res.json({
-			errors: format_error(validated.error),
-		});
-	}
+	// if (!validated.success) {
+	// 	return res.json({
+	// 		errors: format_error(validated.error),
+	// 	});
+	// }
 
 	const item = await Menu.findOne({ _id: id }).exec().catch( (e: Error) => console.log(e.message) );
 
@@ -168,7 +169,11 @@ export const editMenuItem: Controller = () => async (req, res) => {
 	}
 
 	try {
-		const menu: MenuData = { name: data.name };
+		const menu = {} as MenuData;
+
+		if (data.name) {
+			menu.name = data.name;
+		}
 
 		if (data.procedure) {
 			menu.procedure = processProcedures(data.procedure);
