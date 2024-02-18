@@ -53,7 +53,7 @@ router.get(route('menu').path(), menuController.menu()); // menu
 router.get(route('menu-item').path(), menuController.menuItem()); // menu item
 router.post(route('menu-item-add').path(), menuController.addMenuItem()); // add menu item
 router.post(route('menu-item-edit').path(), menuController.editMenuItem()); // add menu item
-router.post(route('menu-item-delete').path(), menuController.deleteMenuItem()); // add menu item
+router.delete(route('menu-item-delete').path(), menuController.deleteMenuItem()); // add menu item
 
 // KITCHEN
 router.get(route('inventory-menu').path(), kitchenController.menu()); // menu 
