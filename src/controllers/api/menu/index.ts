@@ -1,5 +1,6 @@
 import { format_error } from 'app/helpers/forms';
 import Menu from 'app/models/Menu';
+import { Types } from 'mongoose';
 import { z } from 'zod';
 
 type ProcedureData = {
@@ -50,6 +51,11 @@ export const menu : Controller = () => async (req, res) => {
 // GET /api/menu/:id
 export const menuItem: Controller = () => async (req, res) => {
     const { id } = req.params as MenuItemParams;
+
+	if (id && !Types.ObjectId.isValid(id)) {
+		return res.status(400).json({ message: "Invalid id" });
+	}
+
     const item = await Menu.findOne({ _id: id }).exec().catch( e => console.log(e) );
 
     if (!item) return res.status(404).json({ message: "Item not found" });
