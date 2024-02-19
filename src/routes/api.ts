@@ -30,6 +30,7 @@ const routes = {
 
 	// inventory item
 	"inventory-item": "inventory/item",
+	"inventory-item-info": "inventory/item/:id",
 };
 // Register route
 export const route = registerRoute(routes, "api");
@@ -63,5 +64,6 @@ router.get(route('inventory-stockroom').path(), stockroomController.index()); //
 
 // INVENTORY ITEM
 router.get(route('inventory-item').path(), ItemController.index()); // index
+router.get(route('inventory-item-info').path(), ItemController.item()); // index
 
 export default router;
