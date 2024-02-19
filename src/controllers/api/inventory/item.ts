@@ -1,6 +1,6 @@
-// GET /api/inventory/kitchen
+// GET /api/inventory/item
 export const index: Controller = () => (req, res) => {
 	res.json({
-		message: "Kitchen API",
+		message: "Inventory Item API",
 	});
 };
