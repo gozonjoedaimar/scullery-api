@@ -44,6 +44,7 @@ function route(this: {_ob: KeyStringObject, parent: string}, name: string) {
     const str = new RouteString(name, this.parent);
 
     if(typeof this._ob !== 'undefined') {
+		if (typeof this._ob[name] === 'undefined') throw new Error(`Missing key "${name}" in route object`);
         str.set(`/${sanitize(this._ob[name])}` ?? "");
     }
     return str;
