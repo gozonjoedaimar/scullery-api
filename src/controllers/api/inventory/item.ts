@@ -26,7 +26,7 @@ export const index: Controller = () => async (req, res) => {
 };
 
 // GET /api/inventory/item/:id
-export const item: Controller = () => async (req, res) => {
+export const item: Controller<Object, { id: string }> = () => async (req, res) => {
 	const { id } = req.params;
 
 	if (!id) {
