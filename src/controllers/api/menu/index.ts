@@ -49,8 +49,8 @@ export const menu : Controller = () => async (req, res) => {
 };
 
 // GET /api/menu/:id
-export const menuItem: Controller = () => async (req, res) => {
-    const { id } = req.params as MenuItemParams;
+export const menuItem: Controller<Object, MenuItemParams> = () => async (req, res) => {
+    const { id } = req.params;
 
 	if (id && !Types.ObjectId.isValid(id)) {
 		return res.status(400).json({ message: "Invalid id" });
@@ -90,8 +90,8 @@ function processProcedures(procedures: string[]): ProcedureData[] {
 }
 
 // POST /api/menu/add
-export const addMenuItem: Controller = () => async (req, res) => {
-    const data = req.body as MenuItemData;
+export const addMenuItem: Controller<MenuItemData> = () => async (req, res) => {
+    const data = req.body;
 
     // validate
     const validated = MenuItem.safeParse(data);
@@ -144,9 +144,9 @@ export const addMenuItem: Controller = () => async (req, res) => {
 }
 
 // POST /api/menu/edit/:id
-export const editMenuItem: Controller = () => async (req, res) => {
-	const { id } = req.params as { id: string };
-    const data = req.body as MenuItemData;
+export const editMenuItem: Controller<MenuItemData, { id: string }> = () => async (req, res) => {
+	const { id } = req.params;
+    const data = req.body;
 
 	if (!id) {
 		return res.status(400).json({
@@ -207,8 +207,8 @@ export const editMenuItem: Controller = () => async (req, res) => {
 };
 
 // POST /api/menu/delete/:id
-export const deleteMenuItem: Controller = () => async (req, res) => {
-	const { id } = req.params as { id: string };
+export const deleteMenuItem: Controller<Object, { id: string }> = () => async (req, res) => {
+	const { id } = req.params;
 
 	if (!id) {
 		return res.status(400).json({

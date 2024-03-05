@@ -9,8 +9,8 @@ type FormInput = {
 /**
  * Login
  */
-export const login: RouteHandler = async (req, res) => {
-    const {email, password}: FormInput = req.body;
+export const login: RouteHandler<FormInput> = async (req, res) => {
+    const {email, password} = req.body;
     const auth = await Auth();
 
     // login
@@ -79,9 +79,9 @@ type RegisterData = {
 /**
  * Register
  */
-export const register: RouteHandler = async (req, res) => {
+export const register: RouteHandler<RegisterData> = async (req, res) => {
     const auth = await Auth();
-    const { email, password } = req.body as RegisterData;
+    const { email, password } = req.body;
     const { error } = await auth.register({ email, password });
     res.json({
         error: error?.message,
