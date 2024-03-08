@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import registerRoute from 'app/helpers/routes';
+import * as DashboardController from 'app/controllers/api/dashboard';
 import * as kitchenController from 'app/controllers/api/inventory/kitchen';
 import * as stockroomController from 'app/controllers/api/inventory/stockroom';
 import * as ItemController from 'app/controllers/api/inventory/item'
@@ -15,6 +16,9 @@ const routes = {
 	// NOTE: format => name: 'path'
 	// helpers
 	version: "version",
+
+	//dashboard
+	"best-seller": "dashboard/best-seller",
 
 	// menu
 	menu: "menu",
@@ -56,6 +60,9 @@ router.use(useAuth());
 
 // Helpers
 router.get(route('version').path(), configController.version()); // version
+
+// DASHBOARD
+router.get(route('best-seller').path(), DashboardController.bestSeller()); // best seller
 
 // MENU
 router.get(route('menu').path(), menuController.menu()); // menu 
