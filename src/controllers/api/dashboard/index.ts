@@ -21,6 +21,7 @@ type ItemInfo = {
  * Best seller controller
  */
 export const bestSeller: Controller = () => async (req, res) => {
+    const total_orders = await Order.countDocuments();
     const q = Order.aggregate(bestSellerAggregate);
 
     const bestSeller: OrderInfo[] =
@@ -37,6 +38,7 @@ export const bestSeller: Controller = () => async (req, res) => {
     }
 
     return res.status(200).json({
+        total_orders,
         menus: list,
     });
 };
@@ -60,7 +62,10 @@ export const mostUsed: Controller = () => async (req, res) => {
         }
     }
 
+    const total_used = list.reduce((acc, cur) => acc + cur.count, 0);
+
     return res.status(200).json({
         items: list,
+        total_used,
     });
 };
