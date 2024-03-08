@@ -19,6 +19,7 @@ const routes = {
 
 	//dashboard
 	"best-seller": "dashboard/best-seller",
+	"most-used": "dashboard/most-used",
 
 	// menu
 	menu: "menu",
@@ -63,6 +64,7 @@ router.get(route('version').path(), configController.version()); // version
 
 // DASHBOARD
 router.get(route('best-seller').path(), DashboardController.bestSeller()); // best seller
+router.get(route('most-used').path(), DashboardController.mostUsed()); // most used
 
 // MENU
 router.get(route('menu').path(), menuController.menu()); // menu 
