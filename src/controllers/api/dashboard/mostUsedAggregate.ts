@@ -7,22 +7,10 @@ const mostUsedAggregate: PipelineStage[] = [
         },
     },
     {
-        $group: {
-            _id: "$items",
-            count: {
-                $sum: 1,
-            },
-            id: {
-                $first: "$items",
-            },
-        },
-    },
-    {
         $project: {
             _id: false,
-            count: true,
             id: {
-                $toObjectId: "$id",
+                $toObjectId: "$items",
             },
         },
     },
@@ -37,14 +25,6 @@ const mostUsedAggregate: PipelineStage[] = [
     {
         $unwind: {
             path: "$menu",
-        },
-    },
-    {
-        $limit: 5,
-    },
-    {
-        $sort: {
-            count: -1,
         },
     },
     {
