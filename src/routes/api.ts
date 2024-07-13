@@ -29,7 +29,7 @@ const routes = {
 	"menu-item-delete": "menu/delete/:id",
 
 	// orders
-	"orders": "orders",
+	orders: "orders",
 	"orders-add": "order/add",
 	"orders-edit": "order/edit/:id",
 	"orders-remove": "order/remove/:id",

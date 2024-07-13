@@ -4,7 +4,7 @@ import { init as supabaseInit } from 'app/providers/auth/supabase';
 import { init as mongodbInit } from 'app/providers/db/mongo';
 
 // env provider
-const DEFAULT_PROVIDER = process.env.AUTH_PROVIDER || 'supabase';
+const DEFAULT_PROVIDER = process.env.AUTH_PROVIDER || 'local';
 
 // Init providers
 export const init = () => {
@@ -23,7 +23,7 @@ type AuthProvider = {
             expires_at: string,
             refresh_token: string,
             token_type: string,
-            user: { [key:string]: string|number }
+            user: { [key: string]: string | number }
         },
         error?: Error
     }>,
@@ -32,7 +32,7 @@ type AuthProvider = {
     }>,
     user: (bearer?: string) => Promise<{
         user?: {
-            [key:string]: string,
+            [key: string]: string,
             email: string
         }
     }>

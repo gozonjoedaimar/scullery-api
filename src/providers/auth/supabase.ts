@@ -1,6 +1,11 @@
 import { createClient } from "@supabase/supabase-js";
 
 export const init = () => {
+    if (!process.env.SUPABASE_URL || !process.env.SUPABASE_KEY) {
+        console.log("Supabase not configured");
+        return;
+    }
+
     // Init supabase
     const supabaseUrl = process.env.SUPABASE_URL;
     const supabaseKey = process.env.SUPABASE_KEY;
@@ -44,7 +49,7 @@ export const user = async () => {
 }
 
 export const register = async ({ email, password }: { email: string; password: string; }) => {
-    const { data, error } = await supabase.auth.signUp({email, password});
+    const { data, error } = await supabase.auth.signUp({ email, password });
 
     return {
         error,
